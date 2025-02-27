@@ -10,21 +10,22 @@ Este módulo maneja la autenticación y la asignación de permisos de usuarios e
 
 ### 📌  Flujo de Autenticación y Permisos
 1. Autenticación
-- Se obtiene el access_token tras iniciar sesión.
-- Se ejecuta la acción getUsuarioYPermisos(access) para recuperar los datos del usuario autenticado.
+    - Se obtiene el access_token tras iniciar sesión.
+    - Se ejecuta la acción getUsuarioYPermisos(access) para recuperar los datos del usuario autenticado.
 2. Carga de Permisos del Usuario:
-- Se filtra el usuario con dniUser para extraer sus permisos.
-- Se almacenan en userPermissions y se utiliza useMemo para optimizar su uso.
+    - Se filtra el usuario con dniUser para extraer sus permisos.
+    - Se almacenan en userPermissions y se utiliza useMemo para optimizar su uso.
 3. Gestión de Accesos:
-- Se usa hasPermission.has("permiso") para determinar si el usuario puede acceder a ciertas funcionalidades.
+    - Se usa hasPermission.has("permiso") para determinar si el usuario puede acceder a ciertas funcionalidades.
 4. Carga de Grupos de Permisos (Solo para Administradores):
-- Si el usuario tiene permisos para ver y modificar usuarios, se ejecuta getGrupos(access).
-- Se muestran los grupos disponibles en un Select, permitiendo modificar el grupo de un usuario.
+    - Si el usuario tiene permisos para ver y modificar usuarios, se ejecuta getGrupos(access).
+    - Se muestran los grupos disponibles en un Select, permitiendo modificar el grupo de un usuario.
 
 ## 📌 Ejemplo Estado Global y Carga de Permisos:
 
 ### Los datos del usuario y sus permisos se almacenan en el estado global con Redux Toolkit.
-```export const getUsuarioYPermisos = createAsyncThunk(
+```
+export const getUsuarioYPermisos = createAsyncThunk(
   'poda/getUsuarioYPermisos',
   async (access: string, { rejectWithValue }) => {
     try {
@@ -50,7 +51,8 @@ Este módulo maneja la autenticación y la asignación de permisos de usuarios e
 ```
 
 ### Filtrar Permisos del Usuario Autenticado
-```const userPermissions = useMemo(() => {
+```
+const userPermissions = useMemo(() => {
   if (!usuario_permisos.length) return [];
   
   const usuarioFiltrado = usuario_permisos.find(user => user.username.username == dniUser);
@@ -63,7 +65,8 @@ const hasPermission = useMemo(() => ({
 ```
 
 ### Uso en la UI
-```{hasPermission.has("change_user_groups") && (
+```
+{hasPermission.has("change_user_groups") && (
   <Button
     onClick={handleClickAbmUsuariosPerfiles}
     borderRadius={4}
@@ -79,8 +82,8 @@ const hasPermission = useMemo(() => ({
 ```
 
 ## 📌  Carga de Grupos de Permisos (Solo para Administradores):
-
-```export const getGrupos = createAsyncThunk(
+```
+export const getGrupos = createAsyncThunk(
   'poda/getGrupos',
   async (access: string, { rejectWithValue }) => {
     try {
@@ -108,9 +111,9 @@ const hasPermission = useMemo(() => ({
 ## 📄 Posibles Escenarios de Permisos
 | Escenario | Acción | Permiso Necesario |
 |------------|-----------|-------------|
-| `Visualizar Usuarios	` | `Ver la lista de usuarios` | view_user |
-| `Modificar Grupo de Usuarios` | `Asignar un nuevo grupo a un usuario	` | change_user_groups |
-| `Ver Solicitudes de Poda` | `Acceder al módulo de solicitudes` | view_solicitudpoda |
-| `Ver Podadores` | `Acceder al módulo de podadores` | view_podador |
-| `Ver Estados	` | `	Acceder a los estados de poda` | view_estado |
+| Visualizar Usuarios | Ver la lista de usuarios | `view_user` |
+| Modificar Grupo de Usuarios | Asignar un nuevo grupo a un usuario	| `change_user_groups` |
+| Ver Solicitudes de Poda | Acceder al módulo de solicitudes | `view_solicitudpoda` |
+| Ver Podadores | Acceder al módulo de podadores | `view_podador` |
+| Ver Estados | Acceder a los estados de poda | `view_estado` |
 
