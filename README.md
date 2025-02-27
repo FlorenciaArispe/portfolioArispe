@@ -52,6 +52,12 @@ export const getUsuarioYPermisos = createAsyncThunk(
 
 ### Filtrar Permisos del Usuario Autenticado
 ```
+useEffect(() => {
+    if (access) {
+        dispatch(getUsuarioYPermisos(access));
+    }
+},[]);
+
 const userPermissions = useMemo(() => {
   if (!usuario_permisos.length) return [];
   
